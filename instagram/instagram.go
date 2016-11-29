@@ -370,7 +370,7 @@ func (c *Client) RetrieveAccessToken(code string, redirectURL string) (*UserAcce
 	params.Add("grant_type", GrantType)
 	params.Add("redirect_uri", redirectURL)
 	params.Add("code", code)
-	resp, err := http.PostForm(urlStr, params)
+	resp, err := c.client.PostForm(urlStr, params)
 	if err != nil {
 		return uaToken, err
 	}
