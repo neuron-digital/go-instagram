@@ -488,3 +488,29 @@ func CheckResponse(r *http.Response) error {
 
 	return nil
 }
+
+func (c *Client) setParams(urlStr, str string) (url.Values, error) {
+	rel, err := url.Parse(urlStr)
+	if err != nil {
+		return nil, err
+	}
+	u := c.BaseURL.ResolveReference(rel)
+	q := u.Query()
+	if str != "" {
+		q.Set("text", str)
+	}
+	if c.AccessToken != "" && q.Get("access_token") == "" {
+		q.Set("access_token", c.AccessToken)
+	}
+	if c.ClientSecret != "" && q.Get("client_secret") == "" {
+		q.Set("client_secret", c.ClientSecret)
+	}
+	if c.SignedRequests && q.Get("sig") == "" {
+		sig := c.GenerateSignature(rel.Path, q)
+		q.Set("sig", sig)
+	}
+	if c.ClientID != "" && q.Get("client_id") == "" {
+		q.Set("client_id", c.ClientID)
+	}
+	return q, nil
+}
