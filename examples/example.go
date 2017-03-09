@@ -7,8 +7,9 @@ package main
 
 import (
 	"fmt"
-	"github.com/carbocation/go-instagram/instagram"
 	"os"
+
+	"github.com/neuron-digital/go-instagram/instagram"
 )
 
 func main() {
